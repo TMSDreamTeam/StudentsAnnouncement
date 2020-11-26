@@ -14,12 +14,10 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.tms.studentsannouncement.ui.dashboard.AddAnnouncementFragment"
-        android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_add_announcement" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.tms.studentsannouncement.ui.notifications.MyAnnouncementFragment"
-        android:label="@string/title_notifications"
         tools:layout="@layout/fragment_my_announcements" />
 </navigation>

@@ -10,7 +10,20 @@ object Repository {
     fun initRep() {
         database = Firebase.database.reference
     }
-    private fun writeNewUser(announcement: Announcement) {
+     fun writeNewAnnouncement(announcement: Announcement) {
         database.child("announcements").child(announcement.id.toString()).setValue(announcement)
+    }
+     fun deleteAnnouncement(announcementID: Long){
+        database.child("announcements").child(announcementID.toString()).removeValue()
+    }
+     fun updateAnnouncement(announcement: Announcement){
+        val map= mapOf(
+            "id" to announcement.id,
+            "ownerId" to announcement.ownerId,
+            "title" to announcement.title,
+            "description" to announcement.description,
+            "contacts" to announcement.contacts)
+
+        database.child("announcements").child(announcement.id.toString()).updateChildren(map)
     }
 }

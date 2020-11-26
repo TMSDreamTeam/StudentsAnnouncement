@@ -1,7 +1,5 @@
 package com.tms.studentsannouncement.ui.home
 
-import android.accounts.Account
-import android.graphics.ColorSpace.Model
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +16,8 @@ import com.tms.studentsannouncement.R
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
-    private lateinit var adapter: MyAdapter
+
+    private lateinit var adapter: AnnouncementFirebaseAdapter
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -32,20 +30,24 @@ class HomeFragment : Fragment() {
         val query: Query = FirebaseDatabase.getInstance()
                 .reference
                 .child("announcements")
+/*                .orderByChild("ownerId")
+                .equalTo("me")*/
 
         val options = FirebaseRecyclerOptions.Builder<Announcement>()
                 .setQuery(query) { snapshot ->
                     Announcement(
-                            snapshot.child("id").value.toString().toLong(),
+                            snapshot.child("id").value.toString(),
                             title = snapshot.child("title").value.toString(),
-                            description = snapshot.child("description").value.toString()
+                            description = snapshot.child("description").value.toString(),
+                            contacts = snapshot.child("contacts").value.toString()
                     )
 
                 }
+
                 .build()
         val recyclerView=view.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager=LinearLayoutManager(context)
-        adapter= MyAdapter(options)
+        adapter= AnnouncementFirebaseAdapter(options)
         recyclerView.adapter=adapter
 
     }
