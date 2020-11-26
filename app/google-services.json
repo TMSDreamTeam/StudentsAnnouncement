@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1016030502527",
+    "firebase_url": "https://studentsannouncement.firebaseio.com",
+    "project_id": "studentsannouncement",
+    "storage_bucket": "studentsannouncement.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016030502527:android:fb07ee6f1da09946e0694a",
+        "android_client_info": {
+          "package_name": "com.tms.studentsannouncement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1016030502527-tm261gur9r1urj38ag2s7u6nghk1u7pv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNgc6lpIgQEA9ELWICbekeleUDi738NvA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1016030502527-tm261gur9r1urj38ag2s7u6nghk1u7pv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
