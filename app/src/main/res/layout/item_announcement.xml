@@ -6,30 +6,41 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <TextView
         android:id="@+id/item_title"
+        style="?android:listSeparatorTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         tools:text="Title"
+        android:shadowColor="#515151"
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="5"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textSize="40dp"
         />
     <TextView
-        android:id="@+id/item_description"
+        android:id="@+id/item_price"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="Description"
+        android:layout_margin="16dp"
+        tools:text="Price"
+        android:textColor="#000000"
         app:layout_constraintTop_toBottomOf="@id/item_title"
         app:layout_constraintStart_toStartOf="parent"
-        android:textSize="40dp"
+        android:textSize="35dp"
         />
+
     <TextView
         android:id="@+id/item_contacts"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="countacts"
-        app:layout_constraintTop_toBottomOf="@id/item_description"
+        android:layout_margin="16dp"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textSize="40dp"
-        />
+        app:layout_constraintTop_toBottomOf="@id/item_price"
+        tools:text="Сontacts" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
