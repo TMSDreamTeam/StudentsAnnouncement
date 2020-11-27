@@ -16,11 +16,11 @@ class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>
     FirebaseRecyclerAdapter<Announcement, AnnouncementFirebaseAdapter.MyViewHolder>(options) {
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val textViewTitle = itemView.findViewById(R.id.item_title) as TextView
-        private val textViewDescription = itemView.findViewById(R.id.item_description) as TextView
+        private val textViewPrice = itemView.findViewById(R.id.item_price) as TextView
         private val textViewContacts = itemView.findViewById(R.id.item_contacts) as TextView
         fun bind(announcement: Announcement) {
             textViewTitle.text = announcement.title
-            textViewDescription.text = announcement.description
+            textViewPrice.text = announcement.price.toString()
             textViewContacts.text = announcement.contacts
             itemView.setOnClickListener {
                 selectedAnnouncement = announcement
