@@ -9,6 +9,9 @@ import com.google.firebase.ktx.Firebase
 object Repository {
     lateinit var database: DatabaseReference
     lateinit var auth: FirebaseAuth
+
+
+
     fun initRep() {
         auth= FirebaseAuth.getInstance()
         database = Firebase.database.reference
