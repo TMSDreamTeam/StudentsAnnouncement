@@ -17,7 +17,7 @@ object Repository {
      fun writeNewAnnouncement(announcement: Announcement) {
         database.child("announcements").child(announcement.id).setValue(announcement)
     }
-     fun deleteAnnouncement(announcementID: Long){
+     fun deleteAnnouncement(announcementID: String){
         database.child("announcements").child(announcementID.toString()).removeValue()
     }
      fun updateAnnouncement(announcement: Announcement){
