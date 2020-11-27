@@ -9,9 +9,7 @@ import com.google.firebase.ktx.Firebase
 object Repository {
     lateinit var database: DatabaseReference
     lateinit var auth: FirebaseAuth
-
-
-
+    var selectedAnnouncement:Announcement?=null
     fun initRep() {
         auth= FirebaseAuth.getInstance()
         database = Firebase.database.reference

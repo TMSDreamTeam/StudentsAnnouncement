@@ -12,12 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.tms.studentsannouncement.ui.dashboard.AddAnnouncementFragment"
+        android:id="@+id/navigation_my_announcement"
+        android:name="com.tms.studentsannouncement.ui.my_announcement.MyAnnouncementFragment"
         tools:layout="@layout/fragment_add_announcement" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.tms.studentsannouncement.ui.notifications.MyAnnouncementFragment"
+        android:id="@+id/navigation_"
+        android:name="com.tms.studentsannouncement.ui.PublishFragment"
         tools:layout="@layout/fragment_my_announcements" />
 </navigation>
