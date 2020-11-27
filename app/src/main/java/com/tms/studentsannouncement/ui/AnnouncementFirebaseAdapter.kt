@@ -10,6 +10,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.tms.studentsannouncement.Announcement
 import com.tms.studentsannouncement.R
+import com.tms.studentsannouncement.Repository.selectedAnnouncement
 
 class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>) :
     FirebaseRecyclerAdapter<Announcement, AnnouncementFirebaseAdapter.MyViewHolder>(options) {
@@ -21,8 +22,9 @@ class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>
             textViewTitle.text = announcement.title
             textViewPrice.text = announcement.price.toString()
             textViewContacts.text = announcement.contacts
-
-
+            itemView.setOnClickListener {
+                selectedAnnouncement = announcement
+            }
         }
     }
 
@@ -36,8 +38,5 @@ class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: Announcement) {
         holder.bind(model)
-
     }
-
-
 }
