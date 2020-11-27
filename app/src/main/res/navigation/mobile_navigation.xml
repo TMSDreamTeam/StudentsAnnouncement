@@ -10,37 +10,25 @@
         android:name="com.tms.studentsannouncement.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_navigation_home_to_myAnnouncementFragment"
-            app:destination="@id/myAnnouncementFragment" />
-        <action
-            android:id="@+id/action_navigation_home_to_detailFragment"
-            app:destination="@id/detailFragment" />
-        <action
-            android:id="@+id/action_navigation_home_to_publishFragment"
-            app:destination="@id/publishFragment" />
+
     </fragment>
     <fragment
-        android:id="@+id/detailFragment"
+        android:id="@+id/navigation_detail"
         android:name="com.tms.studentsannouncement.ui.DetailFragment"
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
-        <action
-            android:id="@+id/action_detailFragment_to_publishFragment"
-            app:destination="@id/publishFragment" />
+
     </fragment>
     <fragment
-        android:id="@+id/publishFragment"
+        android:id="@+id/navigation_publish"
         android:name="com.tms.studentsannouncement.ui.PublishFragment"
         android:label="fragment_publish"
         tools:layout="@layout/fragment_publish" />
     <fragment
-        android:id="@+id/myAnnouncementFragment"
+        android:id="@+id/navigation_my_announcement"
         android:name="com.tms.studentsannouncement.ui.my_announcement.MyAnnouncementFragment"
         android:label="MyAnnouncementFragment" >
-        <action
-            android:id="@+id/action_myAnnouncementFragment_to_detailFragment"
-            app:destination="@id/detailFragment" />
+
     </fragment>
 
 </navigation>

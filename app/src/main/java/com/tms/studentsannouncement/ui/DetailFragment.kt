@@ -51,7 +51,7 @@ class DetailFragment : Fragment() {
             }
         }
         button_revers.setOnClickListener {
-            findNavController().navigate(R.id.action_detailFragment_to_publishFragment)
+         //   findNavController().navigate(R.id.action_detailFragment_to_publishFragment)
         }
     }
 }
