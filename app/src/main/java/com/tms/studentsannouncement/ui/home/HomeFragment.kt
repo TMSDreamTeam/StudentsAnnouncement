@@ -12,6 +12,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.tms.studentsannouncement.Announcement
 import com.tms.studentsannouncement.R
+import com.tms.studentsannouncement.Repository
 
 
 class HomeFragment : Fragment() {
@@ -27,8 +28,7 @@ class HomeFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val query: Query = FirebaseDatabase.getInstance()
-                .reference
+        val query: Query = Repository.database
                 .child("announcements")
 /*                .orderByChild("ownerId")
                 .equalTo("me")*/
@@ -36,10 +36,13 @@ class HomeFragment : Fragment() {
         val options = FirebaseRecyclerOptions.Builder<Announcement>()
                 .setQuery(query) { snapshot ->
                     Announcement(
-                            snapshot.child("id").value.toString(),
+                            id=snapshot.child("id").value.toString(),
                             title = snapshot.child("title").value.toString(),
-                            description = snapshot.child("description").value.toString(),
-                            contacts = snapshot.child("contacts").value.toString()
+                            price =  snapshot.child("price").value.toString().toDouble(),
+                            description=snapshot.child("description").value.toString(),
+                            contacts = snapshot.child("contacts").value.toString(),
+                            university = snapshot.child("university").value.toString(),
+                            faculty = snapshot.child("faculty").value.toString()
                     )
 
                 }
@@ -56,6 +59,7 @@ class HomeFragment : Fragment() {
         super.onStart()
         adapter.startListening();
     }
+
 
     override fun onStop() {
         super.onStop()

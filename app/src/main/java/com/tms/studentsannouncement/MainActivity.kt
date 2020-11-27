@@ -6,6 +6,9 @@ import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth.*
 
@@ -33,26 +36,18 @@ class MainActivity : AppCompatActivity() {
 
         if (getInstance().currentUser == null) {
             startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(),SIGN_IN_CODE)
-        }else {
-            Toast.makeText(this, "${getInstance().currentUser?.displayName}", Toast.LENGTH_SHORT).show()
         }
 
         val navController = findNavController(R.id.nav_host_fragment)
+        val appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.navigation_home, R.id.navigation_notifications))
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        navView.setupWithNavController(navController)
         navView.setOnNavigationItemSelectedListener {item->
-            when(item.itemId) {
-                R.id.navigation_home -> {
+            if(item.itemId==R.id.navigation_add) {
 
-                    true
-                }
-                R.id.navigation_add->{
-                    true
-                }
-                R.id.navigation_my_announcement->{
-                    true
-                }
-
-                else -> false
             }
+            true
         }
     }
 }

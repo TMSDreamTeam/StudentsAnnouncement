@@ -5,8 +5,11 @@ import java.util.*
 
 @IgnoreExtraProperties
 data class Announcement(val id:String=UUID.randomUUID().toString(),
-                   val ownerId:String="",
-                   val title:String="",
-                   val description: String="",
-                   val contacts:String=""){
-}
+                        val owner:String="",
+                        val title:String="",
+                        val price:Double=0.0,
+                        val description: String="",
+                        val contacts:String="",
+                        val university:String="",
+                        val faculty:String=""
+)

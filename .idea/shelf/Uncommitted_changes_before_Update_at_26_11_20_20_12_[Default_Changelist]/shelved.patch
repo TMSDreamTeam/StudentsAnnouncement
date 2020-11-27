@@ -1,0 +1,496 @@
+Index: app/src/main/res/navigation/mobile_navigation.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<navigation xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:id=\"@+id/mobile_navigation\"\n    app:startDestination=\"@+id/navigation_home\">\n\n    <fragment\n        android:id=\"@+id/navigation_home\"\n        android:name=\"com.tms.studentsannouncement.ui.home.HomeFragment\"\n        android:label=\"@string/title_home\"\n        tools:layout=\"@layout/fragment_home\" />\n\n    <fragment\n        android:id=\"@+id/navigation_dashboard\"\n        android:name=\"com.tms.studentsannouncement.ui.dashboard.AddAnnouncementFragment\"\n        android:label=\"@string/title_dashboard\"\n        tools:layout=\"@layout/fragment_add_announcement\" />\n\n    <fragment\n        android:id=\"@+id/navigation_notifications\"\n        android:name=\"com.tms.studentsannouncement.ui.notifications.MyAnnouncementFragment\"\n        android:label=\"@string/title_notifications\"\n        tools:layout=\"@layout/fragment_my_announcements\" />\n</navigation>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/navigation/mobile_navigation.xml	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/res/navigation/mobile_navigation.xml	(date 1606407620000)
+@@ -14,12 +14,10 @@
+     <fragment
+         android:id="@+id/navigation_dashboard"
+         android:name="com.tms.studentsannouncement.ui.dashboard.AddAnnouncementFragment"
+-        android:label="@string/title_dashboard"
+         tools:layout="@layout/fragment_add_announcement" />
+ 
+     <fragment
+         android:id="@+id/navigation_notifications"
+         android:name="com.tms.studentsannouncement.ui.notifications.MyAnnouncementFragment"
+-        android:label="@string/title_notifications"
+         tools:layout="@layout/fragment_my_announcements" />
+ </navigation>
+\ No newline at end of file
+Index: app/src/main/java/com/tms/studentsannouncement/Announcement.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.tms.studentsannouncement\n\nimport com.google.firebase.database.IgnoreExtraProperties\nimport java.util.*\n\n@IgnoreExtraProperties\nclass Announcement(var id:Long=0,var ownerID:String=\"\",var title:String=\"\",var description: String=\"\",var contacts:String=\"\"){\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/Announcement.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/Announcement.kt	(date 1606410310000)
+@@ -4,5 +4,9 @@
+ import java.util.*
+ 
+ @IgnoreExtraProperties
+-class Announcement(var id:Long=0,var ownerID:String="",var title:String="",var description: String="",var contacts:String=""){
++data class Announcement(val id:String=UUID.randomUUID().toString(),
++                   val ownerId:String="",
++                   val title:String="",
++                   val description: String="",
++                   val contacts:String=""){
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/tms/studentsannouncement/ui/home/MyAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.tms.studentsannouncement.ui.home\n\nimport android.accounts.AuthenticatorDescription\nimport android.os.Parcel\nimport android.os.Parcelable\nimport android.util.Log\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport android.widget.TextView\nimport androidx.constraintlayout.widget.ConstraintLayout\nimport androidx.recyclerview.widget.DiffUtil\nimport androidx.recyclerview.widget.ListAdapter\n\nimport androidx.recyclerview.widget.RecyclerView\nimport com.firebase.ui.database.FirebaseRecyclerAdapter\nimport com.firebase.ui.database.FirebaseRecyclerOptions\nimport com.tms.studentsannouncement.Announcement\nimport com.tms.studentsannouncement.R\nimport com.tms.studentsannouncement.Repository\n\nclass MyAdapter(options: FirebaseRecyclerOptions<Announcement>)\n    : FirebaseRecyclerAdapter<Announcement, MyAdapter.MyViewHolder>(options){\n    class MyViewHolder(view:View):RecyclerView.ViewHolder(view){\n        private val textViewTitle=itemView.findViewById(R.id.item_title) as TextView\n        private val textViewDescription=itemView.findViewById(R.id.item_description) as TextView\n        private val textViewContacts=itemView.findViewById(R.id.item_contacts) as TextView\n        fun bind(announcement: Announcement){\n            textViewTitle.text=announcement.title\n            textViewDescription.text=announcement.description\n            textViewContacts.text=announcement.contacts\n\n\n        }\n    }\n\n    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {\n        val view =LayoutInflater.from(parent.context).inflate(R.layout.item_announcement,parent,false)\n        return MyViewHolder(view)\n    }\n\n    override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: Announcement) {\n        holder.bind(model)\n        Log.e(\"TAG\",position.toString())\n    }\n\n\n}
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/ui/home/MyAdapter.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/ui/home/AnnouncementFirebaseAdapter.kt	(date 1606410031000)
+@@ -1,26 +1,18 @@
+ package com.tms.studentsannouncement.ui.home
+ 
+-import android.accounts.AuthenticatorDescription
+-import android.os.Parcel
+-import android.os.Parcelable
+-import android.util.Log
+ import android.view.LayoutInflater
+ import android.view.View
+ import android.view.ViewGroup
+ import android.widget.TextView
+-import androidx.constraintlayout.widget.ConstraintLayout
+-import androidx.recyclerview.widget.DiffUtil
+-import androidx.recyclerview.widget.ListAdapter
+ 
+ import androidx.recyclerview.widget.RecyclerView
+ import com.firebase.ui.database.FirebaseRecyclerAdapter
+ import com.firebase.ui.database.FirebaseRecyclerOptions
+ import com.tms.studentsannouncement.Announcement
+ import com.tms.studentsannouncement.R
+-import com.tms.studentsannouncement.Repository
+ 
+-class MyAdapter(options: FirebaseRecyclerOptions<Announcement>)
+-    : FirebaseRecyclerAdapter<Announcement, MyAdapter.MyViewHolder>(options){
++class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>)
++    : FirebaseRecyclerAdapter<Announcement, AnnouncementFirebaseAdapter.MyViewHolder>(options){
+     class MyViewHolder(view:View):RecyclerView.ViewHolder(view){
+         private val textViewTitle=itemView.findViewById(R.id.item_title) as TextView
+         private val textViewDescription=itemView.findViewById(R.id.item_description) as TextView
+@@ -41,7 +33,6 @@
+ 
+     override fun onBindViewHolder(holder: MyViewHolder, position: Int, model: Announcement) {
+         holder.bind(model)
+-        Log.e("TAG",position.toString())
+     }
+ 
+ 
+Index: app/src/main/java/com/tms/studentsannouncement/Repository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.tms.studentsannouncement\n\nimport com.google.firebase.database.DatabaseReference\nimport com.google.firebase.database.ktx.database\nimport com.google.firebase.ktx.Firebase\n\nobject Repository {\n    lateinit var database: DatabaseReference\n    lateinit var ref: DatabaseReference\n    fun initRep() {\n        database = Firebase.database.reference\n    }\n    private fun writeNewUser(announcement: Announcement) {\n        database.child(\"announcements\").child(announcement.id.toString()).setValue(announcement)\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/Repository.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/Repository.kt	(date 1606408874000)
+@@ -10,7 +10,20 @@
+     fun initRep() {
+         database = Firebase.database.reference
+     }
+-    private fun writeNewUser(announcement: Announcement) {
++     fun writeNewAnnouncement(announcement: Announcement) {
+         database.child("announcements").child(announcement.id.toString()).setValue(announcement)
+     }
++     fun deleteAnnouncement(announcementID: Long){
++        database.child("announcements").child(announcementID.toString()).removeValue()
++    }
++     fun updateAnnouncement(announcement: Announcement){
++        val map= mapOf(
++            "id" to announcement.id,
++            "ownerId" to announcement.ownerId,
++            "title" to announcement.title,
++            "description" to announcement.description,
++            "contacts" to announcement.contacts)
++
++        database.child("announcements").child(announcement.id.toString()).updateChildren(map)
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/java/com/tms/studentsannouncement/ui/home/HomeFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.tms.studentsannouncement.ui.home\n\nimport android.accounts.Account\nimport android.graphics.ColorSpace.Model\nimport android.os.Bundle\nimport android.view.LayoutInflater\nimport android.view.View\nimport android.view.ViewGroup\nimport androidx.fragment.app.Fragment\nimport androidx.recyclerview.widget.LinearLayoutManager\nimport androidx.recyclerview.widget.RecyclerView\nimport com.firebase.ui.database.FirebaseRecyclerOptions\nimport com.google.firebase.database.FirebaseDatabase\nimport com.google.firebase.database.Query\nimport com.tms.studentsannouncement.Announcement\nimport com.tms.studentsannouncement.R\n\n\nclass HomeFragment : Fragment() {\n\n    private lateinit var homeViewModel: HomeViewModel\n    private lateinit var adapter: MyAdapter\n    override fun onCreateView(\n            inflater: LayoutInflater,\n            container: ViewGroup?,\n            savedInstanceState: Bundle?\n    ): View? {\n        return inflater.inflate(R.layout.fragment_home, container, false)\n    }\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\n        super.onViewCreated(view, savedInstanceState)\n        val query: Query = FirebaseDatabase.getInstance()\n                .reference\n                .child(\"announcements\")\n\n        val options = FirebaseRecyclerOptions.Builder<Announcement>()\n                .setQuery(query) { snapshot ->\n                    Announcement(\n                            snapshot.child(\"id\").value.toString().toLong(),\n                            title = snapshot.child(\"title\").value.toString(),\n                            description = snapshot.child(\"description\").value.toString()\n                    )\n\n                }\n                .build()\n        val recyclerView=view.findViewById<RecyclerView>(R.id.recycler_view)\n        recyclerView.layoutManager=LinearLayoutManager(context)\n        adapter= MyAdapter(options)\n        recyclerView.adapter=adapter\n\n    }\n\n    override fun onStart() {\n        super.onStart()\n        adapter.startListening();\n    }\n\n    override fun onStop() {\n        super.onStop()\n        adapter.stopListening()\n    }\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/ui/home/HomeFragment.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/ui/home/HomeFragment.kt	(date 1606410090000)
+@@ -1,7 +1,5 @@
+ package com.tms.studentsannouncement.ui.home
+ 
+-import android.accounts.Account
+-import android.graphics.ColorSpace.Model
+ import android.os.Bundle
+ import android.view.LayoutInflater
+ import android.view.View
+@@ -18,8 +16,8 @@
+ 
+ class HomeFragment : Fragment() {
+ 
+-    private lateinit var homeViewModel: HomeViewModel
+-    private lateinit var adapter: MyAdapter
++
++    private lateinit var adapter: AnnouncementFirebaseAdapter
+     override fun onCreateView(
+             inflater: LayoutInflater,
+             container: ViewGroup?,
+@@ -32,20 +30,24 @@
+         val query: Query = FirebaseDatabase.getInstance()
+                 .reference
+                 .child("announcements")
++/*                .orderByChild("ownerId")
++                .equalTo("me")*/
+ 
+         val options = FirebaseRecyclerOptions.Builder<Announcement>()
+                 .setQuery(query) { snapshot ->
+                     Announcement(
+-                            snapshot.child("id").value.toString().toLong(),
++                            snapshot.child("id").value.toString(),
+                             title = snapshot.child("title").value.toString(),
+-                            description = snapshot.child("description").value.toString()
++                            description = snapshot.child("description").value.toString(),
++                            contacts = snapshot.child("contacts").value.toString()
+                     )
+ 
+                 }
++
+                 .build()
+         val recyclerView=view.findViewById<RecyclerView>(R.id.recycler_view)
+         recyclerView.layoutManager=LinearLayoutManager(context)
+-        adapter= MyAdapter(options)
++        adapter= AnnouncementFirebaseAdapter(options)
+         recyclerView.adapter=adapter
+ 
+     }
+Index: app/src/main/java/com/tms/studentsannouncement/ui/notifications/NotificationsViewModel.kt
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/ui/notifications/NotificationsViewModel.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/ui/notifications/NotificationsViewModel.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
+@@ -1,13 +0,0 @@
+-package com.tms.studentsannouncement.ui.notifications
+-
+-import androidx.lifecycle.LiveData
+-import androidx.lifecycle.MutableLiveData
+-import androidx.lifecycle.ViewModel
+-
+-class NotificationsViewModel : ViewModel() {
+-
+-    private val _text = MutableLiveData<String>().apply {
+-        value = "This is notifications Fragment"
+-    }
+-    val text: LiveData<String> = _text
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/tms/studentsannouncement/ui/home/HomeViewModel.kt
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/ui/home/HomeViewModel.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/ui/home/HomeViewModel.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
+@@ -1,13 +0,0 @@
+-package com.tms.studentsannouncement.ui.home
+-
+-import androidx.lifecycle.LiveData
+-import androidx.lifecycle.MutableLiveData
+-import androidx.lifecycle.ViewModel
+-
+-class HomeViewModel : ViewModel() {
+-
+-    private val _text = MutableLiveData<String>().apply {
+-        value = "This is home Fragment"
+-    }
+-    val text: LiveData<String> = _text
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/tms/studentsannouncement/ui/notifications/MyAnnouncementFragment.kt
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/ui/notifications/MyAnnouncementFragment.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/ui/notifications/MyAnnouncementFragment.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
+@@ -1,31 +0,0 @@
+-package com.tms.studentsannouncement.ui.notifications
+-
+-import android.os.Bundle
+-import android.view.LayoutInflater
+-import android.view.View
+-import android.view.ViewGroup
+-import android.widget.TextView
+-import androidx.fragment.app.Fragment
+-import androidx.lifecycle.Observer
+-import androidx.lifecycle.ViewModelProvider
+-import com.tms.studentsannouncement.R
+-
+-class MyAnnouncementFragment : Fragment() {
+-
+-    private lateinit var notificationsViewModel: NotificationsViewModel
+-
+-    override fun onCreateView(
+-            inflater: LayoutInflater,
+-            container: ViewGroup?,
+-            savedInstanceState: Bundle?
+-    ): View? {
+-        notificationsViewModel =
+-                ViewModelProvider(this).get(NotificationsViewModel::class.java)
+-        val root = inflater.inflate(R.layout.fragment_my_announcements, container, false)
+-        val textView: TextView = root.findViewById(R.id.text_notifications)
+-        notificationsViewModel.text.observe(viewLifecycleOwner, Observer {
+-            textView.text = it
+-        })
+-        return root
+-    }
+-}
+\ No newline at end of file
+Index: app/src/main/java/com/tms/studentsannouncement/MyViewModel.java
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/MyViewModel.java	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/MyViewModel.java	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
+@@ -1,5 +0,0 @@
+-package com.tms.studentsannouncement;
+-
+-public class MyViewModel {
+-
+-}
+Index: app/src/main/java/com/tms/studentsannouncement/ui/dashboard/AddAnnouncementFragment.kt
+===================================================================
+--- app/src/main/java/com/tms/studentsannouncement/ui/dashboard/AddAnnouncementFragment.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ app/src/main/java/com/tms/studentsannouncement/ui/dashboard/AddAnnouncementFragment.kt	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
+@@ -1,21 +0,0 @@
+-package com.tms.studentsannouncement.ui.dashboard
+-
+-import android.os.Bundle
+-import android.view.LayoutInflater
+-import android.view.View
+-import android.view.ViewGroup
+-import android.widget.TextView
+-import androidx.fragment.app.Fragment
+-import com.tms.studentsannouncement.R
+-
+-class AddAnnouncementFragment : Fragment() {
+-    override fun onCreateView(
+-            inflater: LayoutInflater,
+-            container: ViewGroup?,
+-            savedInstanceState: Bundle?
+-    ): View? {
+-        val root = inflater.inflate(R.layout.fragment_add_announcement, container, false)
+-        val textView: TextView = root.findViewById(R.id.text_dashboard)
+-        return root
+-    }
+-}
+\ No newline at end of file
+Index: .idea/navEditor.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/navEditor.xml	(date 1606407625000)
++++ .idea/navEditor.xml	(date 1606407625000)
+@@ -0,0 +1,55 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="navEditor-manualLayoutAlgorithm2">
++    <option name="myPositions">
++      <map>
++        <entry key="mobile_navigation.xml">
++          <value>
++            <LayoutPositions>
++              <option name="myPositions">
++                <map>
++                  <entry key="navigation_dashboard">
++                    <value>
++                      <LayoutPositions>
++                        <option name="myPosition">
++                          <Point>
++                            <option name="x" value="256" />
++                            <option name="y" value="12" />
++                          </Point>
++                        </option>
++                      </LayoutPositions>
++                    </value>
++                  </entry>
++                  <entry key="navigation_home">
++                    <value>
++                      <LayoutPositions>
++                        <option name="myPosition">
++                          <Point>
++                            <option name="x" value="12" />
++                            <option name="y" value="12" />
++                          </Point>
++                        </option>
++                      </LayoutPositions>
++                    </value>
++                  </entry>
++                  <entry key="navigation_notifications">
++                    <value>
++                      <LayoutPositions>
++                        <option name="myPosition">
++                          <Point>
++                            <option name="x" value="12" />
++                            <option name="y" value="368" />
++                          </Point>
++                        </option>
++                      </LayoutPositions>
++                    </value>
++                  </entry>
++                </map>
++              </option>
++            </LayoutPositions>
++          </value>
++        </entry>
++      </map>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AndroidLayouts\">\n    <shared>\n      <config />\n    </shared>\n  </component>\n  <component name=\"BranchesTreeState\">\n    <expand>\n      <path>\n        <item name=\"ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\n        <item name=\"LOCAL_ROOT\" type=\"e8cecc67:BranchNodeDescriptor\" />\n      </path>\n    </expand>\n    <select />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"e4f43b72-613f-469d-838f-11d843269e9f\" name=\"Default Changelist\" comment=\"\">\n      <change beforePath=\"$PROJECT_DIR$/app/src/main/res/values/strings.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/app/src/main/res/values/strings.xml\" afterDir=\"false\" />\n    </list>\n    <list id=\"57d929a6-4ea7-4db2-8884-03d21f9e064b\" name=\"Revert &quot;init commit&quot;\" comment=\"Revert &quot;init commit&quot;&#10;&#10;This reverts commit f0fa4f49\" />\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"ExecutionTargetManager\" SELECTED_TARGET=\"device_and_snapshot_combo_box_target[]\" />\n  <component name=\"ExternalProjectsData\">\n    <projectState path=\"$PROJECT_DIR$\">\n      <ProjectState />\n    </projectState>\n  </component>\n  <component name=\"ExternalProjectsManager\">\n    <system id=\"GRADLE\">\n      <state>\n        <projects_view>\n          <tree_state>\n            <expand />\n            <select />\n          </tree_state>\n        </projects_view>\n      </state>\n    </system>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n    <option name=\"RESET_MODE\" value=\"MIXED\" />\n  </component>\n  <component name=\"ProjectId\" id=\"1kpmWSLNIDZ7SXywdVSIgZepRBM\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">\n    <property name=\"ASKED_SHARE_PROJECT_CONFIGURATION_FILES\" value=\"true\" />\n    <property name=\"RunOnceActivity.OpenProjectViewOnStart\" value=\"true\" />\n    <property name=\"RunOnceActivity.ShowReadmeOnStart\" value=\"true\" />\n  </component>\n  <component name=\"RunManager\">\n    <configuration default=\"true\" type=\"AndroidJUnit\" factoryName=\"Android JUnit\">\n      <option name=\"TEST_OBJECT\" value=\"class\" />\n      <option name=\"WORKING_DIRECTORY\" value=\"$MODULE_DIR$\" />\n      <method v=\"2\">\n        <option name=\"Android.Gradle.BeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"app\" type=\"AndroidRunConfigurationType\" factoryName=\"Android App\">\n      <module name=\"StudentsAnnouncement.app\" />\n      <option name=\"DEPLOY\" value=\"true\" />\n      <option name=\"DEPLOY_APK_FROM_BUNDLE\" value=\"false\" />\n      <option name=\"DEPLOY_AS_INSTANT\" value=\"false\" />\n      <option name=\"ARTIFACT_NAME\" value=\"\" />\n      <option name=\"PM_INSTALL_OPTIONS\" value=\"\" />\n      <option name=\"ALL_USERS\" value=\"false\" />\n      <option name=\"DYNAMIC_FEATURES_DISABLED_LIST\" value=\"\" />\n      <option name=\"ACTIVITY_EXTRA_FLAGS\" value=\"\" />\n      <option name=\"MODE\" value=\"default_activity\" />\n      <option name=\"CLEAR_LOGCAT\" value=\"false\" />\n      <option name=\"SHOW_LOGCAT_AUTOMATICALLY\" value=\"false\" />\n      <option name=\"SKIP_NOOP_APK_INSTALLATIONS\" value=\"true\" />\n      <option name=\"FORCE_STOP_RUNNING_APP\" value=\"true\" />\n      <option name=\"TARGET_SELECTION_MODE\" value=\"DEVICE_AND_SNAPSHOT_COMBO_BOX\" />\n      <option name=\"SELECTED_CLOUD_MATRIX_CONFIGURATION_ID\" value=\"-1\" />\n      <option name=\"SELECTED_CLOUD_MATRIX_PROJECT_ID\" value=\"\" />\n      <option name=\"DEBUGGER_TYPE\" value=\"Auto\" />\n      <Auto>\n        <option name=\"USE_JAVA_AWARE_DEBUGGER\" value=\"false\" />\n        <option name=\"SHOW_STATIC_VARS\" value=\"true\" />\n        <option name=\"WORKING_DIR\" value=\"\" />\n        <option name=\"TARGET_LOGGING_CHANNELS\" value=\"lldb process:gdb-remote packets\" />\n        <option name=\"SHOW_OPTIMIZED_WARNING\" value=\"true\" />\n      </Auto>\n      <Hybrid>\n        <option name=\"USE_JAVA_AWARE_DEBUGGER\" value=\"false\" />\n        <option name=\"SHOW_STATIC_VARS\" value=\"true\" />\n        <option name=\"WORKING_DIR\" value=\"\" />\n        <option name=\"TARGET_LOGGING_CHANNELS\" value=\"lldb process:gdb-remote packets\" />\n        <option name=\"SHOW_OPTIMIZED_WARNING\" value=\"true\" />\n      </Hybrid>\n      <Java />\n      <Native>\n        <option name=\"USE_JAVA_AWARE_DEBUGGER\" value=\"false\" />\n        <option name=\"SHOW_STATIC_VARS\" value=\"true\" />\n        <option name=\"WORKING_DIR\" value=\"\" />\n        <option name=\"TARGET_LOGGING_CHANNELS\" value=\"lldb process:gdb-remote packets\" />\n        <option name=\"SHOW_OPTIMIZED_WARNING\" value=\"true\" />\n      </Native>\n      <Profilers>\n        <option name=\"ADVANCED_PROFILING_ENABLED\" value=\"false\" />\n        <option name=\"STARTUP_PROFILING_ENABLED\" value=\"false\" />\n        <option name=\"STARTUP_CPU_PROFILING_ENABLED\" value=\"false\" />\n        <option name=\"STARTUP_CPU_PROFILING_CONFIGURATION_NAME\" value=\"Sample Java Methods\" />\n        <option name=\"STARTUP_NATIVE_MEMORY_PROFILING_ENABLED\" value=\"false\" />\n        <option name=\"NATIVE_MEMORY_SAMPLE_RATE_BYTES\" value=\"2048\" />\n      </Profilers>\n      <option name=\"DEEP_LINK\" value=\"\" />\n      <option name=\"ACTIVITY_CLASS\" value=\"\" />\n      <option name=\"SEARCH_ACTIVITY_IN_GLOBAL_SCOPE\" value=\"false\" />\n      <option name=\"SKIP_ACTIVITY_VALIDATION\" value=\"false\" />\n      <method v=\"2\">\n        <option name=\"Android.Gradle.BeforeRunTask\" enabled=\"true\" />\n      </method>\n    </configuration>\n  </component>\n  <component name=\"SvnConfiguration\">\n    <configuration />\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"e4f43b72-613f-469d-838f-11d843269e9f\" name=\"Default Changelist\" comment=\"\" />\n      <created>1606405938862</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1606405938862</updated>\n    </task>\n    <task id=\"LOCAL-00001\" summary=\"init commit\">\n      <created>1606406012425</created>\n      <option name=\"number\" value=\"00001\" />\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1606406012425</updated>\n    </task>\n    <task id=\"LOCAL-00002\" summary=\"init commit\">\n      <created>1606406026666</created>\n      <option name=\"number\" value=\"00002\" />\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\n      <option name=\"project\" value=\"LOCAL\" />\n      <updated>1606406026666</updated>\n    </task>\n    <option name=\"localTasksCounter\" value=\"3\" />\n    <servers />\n  </component>\n  <component name=\"Vcs.Log.Tabs.Properties\">\n    <option name=\"TAB_STATES\">\n      <map>\n        <entry key=\"MAIN\">\n          <value>\n            <State />\n          </value>\n        </entry>\n      </map>\n    </option>\n    <option name=\"oldMeFiltersMigrated\" value=\"true\" />\n  </component>\n  <component name=\"VcsManagerConfiguration\">\n    <MESSAGE value=\"init commit\" />\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"init commit\" />\n  </component>\n  <component name=\"WindowStateProjectService\">\n    <state x=\"516\" y=\"100\" width=\"950\" height=\"913\" key=\"CommitChangelistDialog2\" timestamp=\"1606406040863\">\n      <screen x=\"72\" y=\"27\" width=\"1848\" height=\"1053\" />\n    </state>\n    <state x=\"516\" y=\"100\" width=\"950\" height=\"913\" key=\"CommitChangelistDialog2/72.27.1848.1053@72.27.1848.1053\" timestamp=\"1606406040863\" />\n    <state x=\"779\" y=\"311\" width=\"424\" height=\"491\" key=\"FileChooserDialogImpl\" timestamp=\"1606406094667\">\n      <screen x=\"72\" y=\"27\" width=\"1848\" height=\"1053\" />\n    </state>\n    <state x=\"779\" y=\"311\" width=\"424\" height=\"491\" key=\"FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053\" timestamp=\"1606406094667\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/workspace.xml	(revision d92c1c679eb288010e9f02b6ff9059d04930f2d2)
++++ .idea/workspace.xml	(date 1606410538000)
+@@ -5,6 +5,10 @@
+       <config />
+     </shared>
+   </component>
++  <component name="AndroidLogFilters">
++    <option name="TOOL_WINDOW_LOG_LEVEL" value="error" />
++    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
++  </component>
+   <component name="BranchesTreeState">
+     <expand>
+       <path>
+@@ -16,15 +20,29 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="e4f43b72-613f-469d-838f-11d843269e9f" name="Default Changelist" comment="">
+-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/navEditor.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/executionHistory/executionHistory.lock" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.bin" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/6.5/fileHashes/fileHashes.lock" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/Announcement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/Announcement.kt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/MyViewModel.java" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/Repository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/Repository.kt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/ui/dashboard/AddAnnouncementFragment.kt" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/ui/home/HomeFragment.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/ui/home/HomeFragment.kt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/ui/home/HomeViewModel.kt" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/ui/home/MyAdapter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/ui/home/AnnouncementFirebaseAdapter.kt" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/ui/notifications/MyAnnouncementFragment.kt" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/tms/studentsannouncement/ui/notifications/NotificationsViewModel.kt" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/app/src/main/res/navigation/mobile_navigation.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/navigation/mobile_navigation.xml" afterDir="false" />
+     </list>
+-    <list id="57d929a6-4ea7-4db2-8884-03d21f9e064b" name="Revert &quot;init commit&quot;" comment="Revert &quot;init commit&quot;&#10;&#10;This reverts commit f0fa4f49" />
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+     <option name="LAST_RESOLUTION" value="IGNORE" />
+   </component>
+-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
++  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[Pixel_3a_API_30_x86]" />
+   <component name="ExternalProjectsData">
+     <projectState path="$PROJECT_DIR$">
+       <ProjectState />
+@@ -54,6 +72,7 @@
+     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
++    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+   </component>
+   <component name="RunManager">
+     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+@@ -63,7 +82,7 @@
+         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+       </method>
+     </configuration>
+-    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App">
++    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+       <module name="StudentsAnnouncement.app" />
+       <option name="DEPLOY" value="true" />
+       <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+@@ -146,7 +165,28 @@
+       <option name="project" value="LOCAL" />
+       <updated>1606406026666</updated>
+     </task>
+-    <option name="localTasksCounter" value="3" />
++    <task id="LOCAL-00003" summary="init commit2">
++      <created>1606406172002</created>
++      <option name="number" value="00003" />
++      <option name="presentableId" value="LOCAL-00003" />
++      <option name="project" value="LOCAL" />
++      <updated>1606406172002</updated>
++    </task>
++    <task id="LOCAL-00004" summary="init commit3">
++      <created>1606406186178</created>
++      <option name="number" value="00004" />
++      <option name="presentableId" value="LOCAL-00004" />
++      <option name="project" value="LOCAL" />
++      <updated>1606406186178</updated>
++    </task>
++    <task id="LOCAL-00005" summary="init commit">
++      <created>1606406206646</created>
++      <option name="number" value="00005" />
++      <option name="presentableId" value="LOCAL-00005" />
++      <option name="project" value="LOCAL" />
++      <updated>1606406206646</updated>
++    </task>
++    <option name="localTasksCounter" value="6" />
+     <servers />
+   </component>
+   <component name="Vcs.Log.Tabs.Properties">
+@@ -162,10 +202,16 @@
+     <option name="oldMeFiltersMigrated" value="true" />
+   </component>
+   <component name="VcsManagerConfiguration">
++    <MESSAGE value="init commit2" />
++    <MESSAGE value="init commit3" />
+     <MESSAGE value="init commit" />
+     <option name="LAST_COMMIT_MESSAGE" value="init commit" />
+   </component>
+   <component name="WindowStateProjectService">
++    <state x="729" y="302" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1606410074058">
++      <screen x="72" y="27" width="1848" height="1053" />
++    </state>
++    <state x="729" y="302" width="524" height="509" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/72.27.1848.1053@72.27.1848.1053" timestamp="1606410074058" />
+     <state x="516" y="100" width="950" height="913" key="CommitChangelistDialog2" timestamp="1606406040863">
+       <screen x="72" y="27" width="1848" height="1053" />
+     </state>
+@@ -174,5 +220,25 @@
+       <screen x="72" y="27" width="1848" height="1053" />
+     </state>
+     <state x="779" y="311" width="424" height="491" key="FileChooserDialogImpl/72.27.1848.1053@72.27.1848.1053" timestamp="1606406094667" />
++    <state width="1802" height="275" key="GridCell.Tab.0.bottom" timestamp="1606409854870">
++      <screen x="72" y="27" width="1848" height="1053" />
++    </state>
++    <state width="1802" height="275" key="GridCell.Tab.0.bottom/72.27.1848.1053@72.27.1848.1053" timestamp="1606409854870" />
++    <state width="1802" height="275" key="GridCell.Tab.0.center" timestamp="1606409854869">
++      <screen x="72" y="27" width="1848" height="1053" />
++    </state>
++    <state width="1802" height="275" key="GridCell.Tab.0.center/72.27.1848.1053@72.27.1848.1053" timestamp="1606409854869" />
++    <state width="1802" height="275" key="GridCell.Tab.0.left" timestamp="1606409854869">
++      <screen x="72" y="27" width="1848" height="1053" />
++    </state>
++    <state width="1802" height="275" key="GridCell.Tab.0.left/72.27.1848.1053@72.27.1848.1053" timestamp="1606409854869" />
++    <state width="1802" height="275" key="GridCell.Tab.0.right" timestamp="1606409854869">
++      <screen x="72" y="27" width="1848" height="1053" />
++    </state>
++    <state width="1802" height="275" key="GridCell.Tab.0.right/72.27.1848.1053@72.27.1848.1053" timestamp="1606409854869" />
++    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2" timestamp="1606406221778">
++      <screen x="72" y="27" width="1848" height="1053" />
++    </state>
++    <state x="591" y="289" width="800" height="535" key="Vcs.Push.Dialog.v2/72.27.1848.1053@72.27.1848.1053" timestamp="1606406221778" />
+   </component>
+ </project>
+\ No newline at end of file
