@@ -24,6 +24,7 @@ class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>
             textViewContacts.text = announcement.contacts
             itemView.setOnClickListener {
                 selectedAnnouncement = announcement
+                Myviewmodel.selectedAnnouncement.postValue(announcement)
             }
         }
     }

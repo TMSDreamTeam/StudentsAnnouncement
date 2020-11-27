@@ -1,10 +1,13 @@
 package com.tms.studentsannouncement.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerOptions
@@ -13,6 +16,7 @@ import com.tms.studentsannouncement.Announcement
 import com.tms.studentsannouncement.R
 import com.tms.studentsannouncement.Repository
 import com.tms.studentsannouncement.ui.AnnouncementFirebaseAdapter
+import com.tms.studentsannouncement.ui.Myviewmodel
 
 
 class HomeFragment : Fragment() {
@@ -26,10 +30,15 @@ class HomeFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
+    @SuppressLint("ResourceType")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val query: Query = Repository.database
                 .child("announcements")
+
+        Myviewmodel.selectedAnnouncement.observe(this, Observer {
+            findNavController().navigate(R.layout.fragment_detail)
+        })
 
         val options = FirebaseRecyclerOptions.Builder<Announcement>()
                 .setQuery(query) { snapshot ->
