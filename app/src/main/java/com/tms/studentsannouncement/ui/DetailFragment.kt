@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.tms.studentsannouncement.R
 import com.tms.studentsannouncement.Repository.selectedAnnouncement
 import com.google.firebase.auth.FirebaseAuth.*
+import com.tms.studentsannouncement.ActivityActions
 import com.tms.studentsannouncement.Repository.deleteAnnouncement
 
 class DetailFragment : Fragment() {
@@ -20,7 +21,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        (context as ActivityActions).hideBottomNavigation()
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 

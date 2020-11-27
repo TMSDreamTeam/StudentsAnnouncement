@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.google.android.material.textfield.TextInputEditText
+import com.tms.studentsannouncement.ActivityActions
 import com.tms.studentsannouncement.Announcement
 import com.tms.studentsannouncement.R
 import com.tms.studentsannouncement.Repository
@@ -21,7 +22,9 @@ class PublishFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (context as ActivityActions).hideBottomNavigation()
         return inflater.inflate(R.layout.fragment_publish, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,6 +60,7 @@ class PublishFragment : Fragment() {
                     contacts = textViewConstants.text.toString()
                 )
                 Repository.updateAnnouncement(announcement)
+                Repository.selectedAnnouncement=null
             }
         }
     }

@@ -13,7 +13,7 @@ import com.tms.studentsannouncement.R
 
 class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>) :
     FirebaseRecyclerAdapter<Announcement, AnnouncementFirebaseAdapter.MyViewHolder>(options) {
-    class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class MyViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         private val textViewTitle = itemView.findViewById(R.id.item_title) as TextView
         private val textViewPrice = itemView.findViewById(R.id.item_price) as TextView
         private val textViewContacts = itemView.findViewById(R.id.item_contacts) as TextView

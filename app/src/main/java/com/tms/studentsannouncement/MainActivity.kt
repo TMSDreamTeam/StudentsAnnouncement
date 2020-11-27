@@ -2,6 +2,7 @@ package com.tms.studentsannouncement
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +15,9 @@ import com.google.firebase.auth.FirebaseAuth.*
 
 private const val SIGN_IN_CODE = 1
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(),
+    ActivityActions {
+    lateinit var navView: BottomNavigationView
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -32,22 +34,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val navView: BottomNavigationView = findViewById(R.id.nav_view)
+         navView= findViewById(R.id.nav_view)
 
         if (getInstance().currentUser == null) {
             startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder().build(),SIGN_IN_CODE)
         }
 
         val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(
-            R.id.navigation_home, R.id.navigation_notifications))
+        val appBarConfiguration = AppBarConfiguration(setOf(R.id.publishFragment,
+            R.id.navigation_home, R.id.navigation_my_announcement))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        navView.setOnNavigationItemSelectedListener {item->
-            if(item.itemId==R.id.navigation_add) {
+    }
 
-            }
-            true
-        }
+    override fun hideBottomNavigation() {
+        navView.visibility=View.GONE
     }
 }
