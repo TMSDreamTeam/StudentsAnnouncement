@@ -24,6 +24,7 @@
       <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_delete.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_detail.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_announcement.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_announcement.xml" afterDir="false" />
     </list>
     <list id="57d929a6-4ea7-4db2-8884-03d21f9e064b" name="Revert &quot;init commit&quot;" comment="feat details last" />
     <option name="SHOW_DIALOG" value="false" />
