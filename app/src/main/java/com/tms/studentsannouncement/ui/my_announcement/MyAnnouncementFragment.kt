@@ -1,4 +1,4 @@
-package com.tms.studentsannouncement.ui.home
+package com.tms.studentsannouncement.ui.my_announcement
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerOptions
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.Query
 import com.tms.studentsannouncement.Announcement
 import com.tms.studentsannouncement.R
@@ -15,7 +16,7 @@ import com.tms.studentsannouncement.Repository
 import com.tms.studentsannouncement.ui.AnnouncementFirebaseAdapter
 
 
-class HomeFragment : Fragment() {
+class MyAnnouncementFragment : Fragment() {
 
 
     private lateinit var adapter: AnnouncementFirebaseAdapter
@@ -30,6 +31,8 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val query: Query = Repository.database
                 .child("announcements")
+                .orderByChild("ownerId")
+                .equalTo("me")
 
         val options = FirebaseRecyclerOptions.Builder<Announcement>()
                 .setQuery(query) { snapshot ->
@@ -48,8 +51,7 @@ class HomeFragment : Fragment() {
                 .build()
         val recyclerView=view.findViewById<RecyclerView>(R.id.recycler_view)
         recyclerView.layoutManager=LinearLayoutManager(context)
-        adapter=
-            AnnouncementFirebaseAdapter(options)
+        adapter= AnnouncementFirebaseAdapter(options)
         recyclerView.adapter=adapter
 
     }
