@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.tms.studentsannouncement.R
 import com.tms.studentsannouncement.Repository.selectedAnnouncement
@@ -34,19 +35,22 @@ class DetailFragment : Fragment() {
         val button_delete = view.findViewById<Button>(R.id.image_button_delete)
 
         title.text = selectedAnnouncement?.title
-        description .text = selectedAnnouncement?.description
+        description.text = selectedAnnouncement?.description
         price.text = selectedAnnouncement?.price.toString()
         contacts.text = selectedAnnouncement?.contacts
-        if(selectedAnnouncement?.owner != getInstance().currentUser?.uid){
-            button_revers.visibility= View.GONE
-            button_delete.visibility= View.GONE
+        if (selectedAnnouncement?.owner != getInstance().currentUser?.uid) {
+            button_revers.visibility = View.GONE
+            button_delete.visibility = View.GONE
         }
         button_delete.setOnClickListener {
-            selectedAnnouncement?.id?.let { it1 -> deleteAnnouncement(it1) }
-            findNavController().popBackStack()
+            selectedAnnouncement?.id?.let { it1 ->
+                deleteAnnouncement(it1)
+                Toast.makeText(context, "Ваше обьявление удалено", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
         }
         button_revers.setOnClickListener {
-
+            findNavController().navigate(R.id.action_detailFragment_to_publishFragment)
         }
     }
 }
