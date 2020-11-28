@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageButton
 import androidx.navigation.fragment.findNavController
 import com.tms.studentsannouncement.R
 import com.tms.studentsannouncement.Repository.selectedAnnouncement
@@ -21,7 +22,6 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        (context as ActivityActions).hideBottomNavigation()
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
@@ -32,8 +32,8 @@ class DetailFragment : Fragment() {
         val description = view.findViewById<TextView>(R.id.text_view_description)
         val price = view.findViewById<TextView>(R.id.text_view_price)
         val contacts = view.findViewById<TextView>(R.id.text_view_contacts)
-        val button_revers = view.findViewById<Button>(R.id.image_button_revers)
-        val button_delete = view.findViewById<Button>(R.id.image_button_delete)
+        val button_revers = view.findViewById<AppCompatImageButton>(R.id.image_button_revers)
+        val button_delete = view.findViewById<AppCompatImageButton>(R.id.image_button_delete)
 
         title.text = selectedAnnouncement?.title
         description.text = selectedAnnouncement?.description

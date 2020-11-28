@@ -15,8 +15,7 @@ import com.google.firebase.auth.FirebaseAuth.*
 
 private const val SIGN_IN_CODE = 1
 
-class MainActivity : AppCompatActivity(),
-    ActivityActions {
+class MainActivity : AppCompatActivity(){
     lateinit var navView: BottomNavigationView
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -41,13 +40,23 @@ class MainActivity : AppCompatActivity(),
         }
 
         val navController = findNavController(R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.navigation_home,
-            R.id.navigation_publish, R.id.navigation_my_announcement))
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
+        navView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_home->{
+                    navController.navigate(R.id.navigation_home)
+                    true
+                }
+                R.id.navigation_my_announcement->{
+                    navController.navigate(R.id.navigation_my_announcement)
+                    true
+                }
+                R.id.navigation_publish -> {
+                   startActivity(Intent(this,AddActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
-    override fun hideBottomNavigation() {
-        navView.visibility=View.GONE
-    }
 }

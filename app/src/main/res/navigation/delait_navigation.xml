@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/delait_navigation"
+    app:startDestination="@id/navigation_detail">
+    <fragment
+        android:id="@+id/navigation_detail"
+        android:name="com.tms.studentsannouncement.ui.DetailFragment"
+        android:label="fragment_detail"
+        tools:layout="@layout/fragment_detail" >
+        <action
+            android:id="@+id/action_navigation_detail_to_navigation_publish"
+            app:destination="@id/navigation_publish" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_publish"
+        android:name="com.tms.studentsannouncement.ui.PublishFragment"
+        android:label="fragment_publish"
+        tools:layout="@layout/fragment_publish" />
+</navigation>

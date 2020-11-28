@@ -1,5 +1,6 @@
 package com.tms.studentsannouncement.ui
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.tms.studentsannouncement.Announcement
+import com.tms.studentsannouncement.DetailActivity
+import com.tms.studentsannouncement.MainActivity
 import com.tms.studentsannouncement.R
 import com.tms.studentsannouncement.Repository.selectedAnnouncement
 
@@ -24,6 +27,12 @@ class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>
             textViewContacts.text = announcement.contacts
             itemView.setOnClickListener {
                 selectedAnnouncement = announcement
+                (itemView.context as MainActivity).startActivity(
+                    Intent(
+                        itemView.context,
+                        DetailActivity::class.java
+                    )
+                )
             }
         }
     }
