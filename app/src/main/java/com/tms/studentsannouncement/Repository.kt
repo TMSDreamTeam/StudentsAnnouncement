@@ -16,9 +16,11 @@ object Repository {
     }
      fun writeNewAnnouncement(announcement: Announcement) {
         database.child("announcements").child(announcement.id).setValue(announcement)
+        database.child("users/${auth.currentUser?.uid}").child(announcement.id).setValue(announcement)
     }
      fun deleteAnnouncement(announcementID: String){
-        database.child("announcements").child(announcementID.toString()).removeValue()
+        database.child("announcements").child(announcementID).removeValue()
+         database.child("users/${auth.currentUser?.uid}").child(announcementID).removeValue()
     }
      fun updateAnnouncement(announcement: Announcement){
         val map= mapOf(
@@ -32,5 +34,6 @@ object Repository {
             "faculty" to announcement.faculty)
 
         database.child("announcements").child(announcement.id).updateChildren(map)
+         database.child("users/${auth.currentUser?.uid}").child(announcement.id).updateChildren(map)
     }
 }

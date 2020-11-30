@@ -1,6 +1,7 @@
 package com.tms.studentsannouncement.ui
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +21,9 @@ class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>
     class MyViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
         private val textViewTitle = itemView.findViewById(R.id.item_title) as TextView
         private val textViewPrice = itemView.findViewById(R.id.item_price) as TextView
-        private val textViewContacts = itemView.findViewById(R.id.item_contacts) as TextView
         fun bind(announcement: Announcement) {
             textViewTitle.text = announcement.title
-            textViewPrice.text = announcement.price.toString()
-            textViewContacts.text = announcement.contacts
+            textViewPrice.text = "${announcement.price}р"
             itemView.setOnClickListener {
                 selectedAnnouncement = announcement
                 (itemView.context as MainActivity).startActivity(
@@ -40,6 +39,7 @@ class AnnouncementFirebaseAdapter(options: FirebaseRecyclerOptions<Announcement>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.item_announcement, parent, false)
+
         return MyViewHolder(
             view
         )

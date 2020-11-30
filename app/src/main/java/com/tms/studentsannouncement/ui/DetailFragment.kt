@@ -1,20 +1,25 @@
 package com.tms.studentsannouncement.ui
 
+import android.R.attr.label
+import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.button.MaterialButton
 import com.tms.studentsannouncement.R
-import com.tms.studentsannouncement.Repository.selectedAnnouncement
-import com.google.firebase.auth.FirebaseAuth.*
-import com.tms.studentsannouncement.ActivityActions
+import com.tms.studentsannouncement.Repository.auth
 import com.tms.studentsannouncement.Repository.deleteAnnouncement
+import com.tms.studentsannouncement.Repository.selectedAnnouncement
+
 
 class DetailFragment : Fragment() {
 
@@ -27,31 +32,37 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val title = view.findViewById<TextView>(R.id.text_view_title)
-        val description = view.findViewById<TextView>(R.id.text_view_description)
-        val price = view.findViewById<TextView>(R.id.text_view_price)
-        val contacts = view.findViewById<TextView>(R.id.text_view_contacts)
-        val button_revers = view.findViewById<AppCompatImageButton>(R.id.image_button_revers)
-        val button_delete = view.findViewById<AppCompatImageButton>(R.id.image_button_delete)
+        val title = view.findViewById<TextView>(R.id.title_fragment_detail)
+        val description = view.findViewById<TextView>(R.id.description_fragment_detail)
+        val price = view.findViewById<TextView>(R.id.price_fragment_detail)
+        val contacts = view.findViewById<TextView>(R.id.contacts_fragment_detail)
+        contacts.setOnClickListener{
+            val clipboard: ClipboardManager? =
+                activity?.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+            val clip = ClipData.newPlainText(contacts.text, contacts.text)
+            clipboard?.setPrimaryClip(clip)
+            Toast.makeText(context, "Скопированно в буфер обмена", Toast.LENGTH_SHORT).show()
+        }
+        val buttonRedact = view.findViewById<MaterialButton>(R.id.edit_fragment_detail)
+        val buttonDelete = view.findViewById<MaterialButton>(R.id.delete_fragment_detail)
 
         title.text = selectedAnnouncement?.title
         description.text = selectedAnnouncement?.description
-        price.text = selectedAnnouncement?.price.toString()
-        contacts.text = selectedAnnouncement?.contacts
-        if (selectedAnnouncement?.owner != getInstance().currentUser?.uid) {
-            button_revers.visibility = View.GONE
-            button_delete.visibility = View.GONE
+        price.text = "${selectedAnnouncement?.price.toString()}р"
+        contacts.text= selectedAnnouncement?.contacts
+        if (selectedAnnouncement?.owner != auth.currentUser?.uid) {
+            buttonRedact.visibility = View.GONE
+            buttonDelete.visibility = View.GONE
         }
-        button_delete.setOnClickListener {
+        buttonDelete.setOnClickListener {
             selectedAnnouncement?.id?.let { it1 ->
                 deleteAnnouncement(it1)
                 Toast.makeText(context, "Ваше обьявление удалено", Toast.LENGTH_SHORT).show()
-                findNavController().popBackStack()
-            }
+                (context as Activity).finish()            }
         }
-        button_revers.setOnClickListener {
-         //   findNavController().navigate(R.id.action_detailFragment_to_publishFragment)
+        buttonRedact.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_detail_to_navigation_publish)
         }
     }
+
 }

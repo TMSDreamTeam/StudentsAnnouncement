@@ -12,7 +12,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StudentsAnnouncement">
-        <activity android:name=".DetailActivity"></activity>
+        <activity android:name=".DetailActivity"
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
         <activity android:name=".AddActivity" />
         <activity
             android:name=".MainActivity"

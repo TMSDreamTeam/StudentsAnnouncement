@@ -5,43 +5,40 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <TextView
-        android:id="@+id/item_title"
-        style="?android:listSeparatorTextViewStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        tools:text="Title"
-        android:shadowColor="#515151"
-        android:shadowDx="2"
-        android:shadowDy="2"
-        android:shadowRadius="5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="40dp"
-        />
-    <TextView
-        android:id="@+id/item_price"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        tools:text="Price"
-        android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@id/item_title"
-        app:layout_constraintStart_toStartOf="parent"
-        android:textSize="35dp"
-        />
 
     <TextView
-        android:id="@+id/item_contacts"
+        android:id="@+id/item_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textSize="30dp"
+        android:layout_margin="20dp"
+        android:textColor="@color/black"
+        android:width="290dp"
+        android:textSize="20sp"
+        android:maxLines="20"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/item_price"
-        tools:text="Сontacts" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Лабораторные работы по С++ Вельченко 3 семестр" />
+
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:textColor="#000000"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="140р" />
+
+    <View
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        tools:layout_editor_absoluteY="88dp" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
